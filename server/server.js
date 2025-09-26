@@ -16,7 +16,8 @@ if (!API_KEY) {
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://youtube-clone-one-eosin-36.vercel.app/",
+  "https://youtube-clone-nu-gold.vercel.app/",
+  "https://vercel.com/marshal-rams-projects/youtube-clone/71LaU43FuGA6g6ZY1zDzsW7cUb7D",
 ];
 // app.use(cors);
 app.use(
