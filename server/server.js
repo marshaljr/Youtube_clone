@@ -18,6 +18,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://youtube-clone-nu-gold.vercel.app/",
   "https://vercel.com/marshal-rams-projects/youtube-clone/71LaU43FuGA6g6ZY1zDzsW7cUb7D",
+  "https://youtube-clone-git-main-marshal-rams-projects.vercel.app/",
+  "https://youtube-clone-35jh2en1l-marshal-rams-projects.vercel.app/",
 ];
 // app.use(cors);
 app.use(
