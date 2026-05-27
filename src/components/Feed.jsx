@@ -34,28 +34,30 @@ const Feed = ({ mainRef }) => {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
-    if (!hasNextPage) return;
+    const rootNode = mainRef?.current;
+    const targetNode = loadMoreRef.current;
+
+    if (!rootNode || !targetNode || !hasNextPage || isFetchingNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
-      { threshold: 1 }
+      {
+        root: rootNode,
+        threshold: 0,
+        rootMargin: "200px 0px",
+      },
     );
 
-    const node = loadMoreRef.current;
-    if (node) {
-      observer.observe(node);
-    }
+    observer.observe(targetNode);
 
     return () => {
-      if (node) {
-        observer.unobserve(node);
-      }
+      observer.disconnect();
     };
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, mainRef]);
 
   return (
     <Stack
@@ -117,10 +119,7 @@ const Feed = ({ mainRef }) => {
 
         {/* Loading State — Show skeleton cards */}
         {isLoading && (
-          <Grid
-            container
-            spacing={2}
-            sx={{ px: { xs: 1, md: 2 } }}>
+          <Grid container spacing={2} sx={{ px: { xs: 1, md: 2 } }}>
             {Array.from({ length: 6 }).map((_, i) => (
               <Grid item xs={12} sm={6} md={4} key={`skeleton-${i}`}>
                 <SkeletonCard />
@@ -154,7 +153,7 @@ const Feed = ({ mainRef }) => {
         )}
 
         {/* Loading More Indicator */}
-        <div ref={loadMoreRef} style={{ height: "1.5px" }}>
+        <div ref={loadMoreRef} style={{ minHeight: "32px", width: "100%" }}>
           {isFetchingNextPage && (
             <Box sx={{ p: 2, textAlign: "center" }}>
               <Typography
